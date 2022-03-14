@@ -1,4 +1,4 @@
-package gui;
+package robots.gui;
 
 import java.awt.Frame;
 
@@ -22,4 +22,5 @@ public class RobotsProgram
         frame.setVisible(true);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
       });
-    }}
+    }
+}
