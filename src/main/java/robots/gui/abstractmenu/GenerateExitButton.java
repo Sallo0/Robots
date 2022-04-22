@@ -6,15 +6,19 @@ import robots.gui.LogWindow;
 import javax.swing.*;
 import java.awt.*;
 import java.util.EventObject;
+import java.util.ResourceBundle;
 
 public class GenerateExitButton {
 
     public void generateUniversalExitButton(EventObject eventObject) {
 
-        Object[] options = {"Да", "Нет!"};
+        Object[] options = {
+                ResourceBundle.getBundle("locale").getString("text.yes"),
+                ResourceBundle.getBundle("locale").getString("text.no")
+        };
         int n = JOptionPane
-                .showOptionDialog(((Component) eventObject.getSource()), "Закрыть окно?",
-                        "Подтверждение", JOptionPane.YES_NO_OPTION,
+                .showOptionDialog(((Component) eventObject.getSource()), ResourceBundle.getBundle("locale").getString("text.closeWindowAsk"),
+                        ResourceBundle.getBundle("locale").getString("text.confirm"), JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE, null, options,
                         options[0]);
 
@@ -24,7 +28,7 @@ public class GenerateExitButton {
                 ((Component) eventObject.getSource()).setVisible(false);
             }
 
-            if (((eventObject.getSource()).getClass() == JMenuItem.class) || ((eventObject.getSource()).getClass() == JButton.class)){
+            if (((eventObject.getSource()).getClass() == JMenuItem.class) || ((eventObject.getSource()).getClass() == JButton.class)) {
                 System.exit(0);
             }
 

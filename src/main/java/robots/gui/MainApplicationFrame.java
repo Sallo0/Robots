@@ -3,18 +3,19 @@ package robots.gui;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import robots.gui.abstractmenu.*;
 import robots.storage.FileStorage;
 import robots.gui.storemanager.WindowState;
-import robots.gui.abstractmenu.ExitMenu;
-import robots.gui.abstractmenu.GenerateMenuLeft;
-import robots.gui.abstractmenu.GenerateMenuRight;
-import robots.gui.abstractmenu.GenerateExitButton;
 
 import robots.log.Logger;
 
@@ -36,7 +37,6 @@ public class MainApplicationFrame extends JFrame {
     public MainApplicationFrame() {
         //Make the big window be indented 50 pixels from each edge
         //of the screen.
-
         int inset = 50;
         //Добавил
         GenerateExitButton exitButton = new GenerateExitButton();
@@ -87,13 +87,13 @@ public class MainApplicationFrame extends JFrame {
     }
 
     public void quitListener() {
-        UIManager.put("OptionPane.yesButtonText", "Да");
-        UIManager.put("OptionPane.noButtonText", "Нет");
+        UIManager.put("OptionPane.yesButtonText", ResourceBundle.getBundle("locale").getString("text.yes"));
+        UIManager.put("OptionPane.noButtonText", ResourceBundle.getBundle("locale").getString("text.no"));
 
         int userAnswer = JOptionPane.showConfirmDialog(
                 this,
-                "Выйти?",
-                "Подтвердите выход",
+                ResourceBundle.getBundle("locale").getString("text.exitAsk"),
+                ResourceBundle.getBundle("locale").getString("title.confirmExit"),
                 JOptionPane.YES_NO_OPTION);
 
 
@@ -131,7 +131,7 @@ public class MainApplicationFrame extends JFrame {
         }
         setMinimumSize(logWindow.getSize());
 
-        Logger.debug("Протокол работает");
+        Logger.debug(ResourceBundle.getBundle("locale").getString("text.protocolWorks"));
         return logWindow;
     }
 
@@ -142,14 +142,25 @@ public class MainApplicationFrame extends JFrame {
 
 
     private JMenuBar generateMenuBar() {
+        ItemListener onChange = e -> {
+            this.getRootPane().getParent().setVisible(false);
+            SwingUtilities.invokeLater(() -> {
+                MainApplicationFrame frame = new MainApplicationFrame();
+                frame.pack();
+                frame.setVisible(true);
+                frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+            });
+        };
         ActionListener quit = (event) -> quitListener();
         JMenuBar menuBar = new JMenuBar();
         GenerateMenuLeft menuLeft = new GenerateMenuLeft();
         GenerateMenuRight menuRight = new GenerateMenuRight();
         ExitMenu exitMenu = new ExitMenu();
+        GenerateLocaleButton localeMenu = new GenerateLocaleButton();
 
         menuBar.add(menuLeft.generateMenuLeft());
         menuBar.add(menuRight.generateMenuRight());
+        menuBar.add(localeMenu.generateLocaleButton(onChange));
         menuBar.add(exitMenu.generateMenuExit(quit));
         return menuBar;
     }
