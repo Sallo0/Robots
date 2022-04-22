@@ -7,11 +7,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class GenerateLocaleButton {
-    private final Locale[] locales = {
-            new Locale("ru", "RU"),
-            new Locale("en", "US"),
-    };
-
     public JMenu generateLocaleButton(ItemListener onChange) {
         JMenu exitMenu = new JMenu(ResourceBundle.getBundle("locale").getString("title.changeLanguage"));
         JRadioButtonMenuItem russianLocale = new JRadioButtonMenuItem("Русский");
