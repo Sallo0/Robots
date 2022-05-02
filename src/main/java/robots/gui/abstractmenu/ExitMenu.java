@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ResourceBundle;
 
+import static javax.swing.UIManager.setLookAndFeel;
+
 public class ExitMenu {
 
     public JMenu generateMenuExit(ActionListener actionListener){

@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.util.ResourceBundle;
 
+import static javax.swing.UIManager.setLookAndFeel;
+
 public class GenerateMenuLeft extends JFrame{
 
     public JMenu generateMenuLeft(){

@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class  FileStorage {
+public class FileStorage {
     private Map<String, WindowState> windowStateStore = new HashMap<>();
     private final String file = new String(System.getProperty("user.home") + File.separator + "robotState");
 
@@ -22,7 +22,6 @@ public class  FileStorage {
         return windowStateStore.get(key);
     }
 
-    //тут надо блок файнали доделать
     public void saveToFile(String path) {
         try
         {
@@ -41,13 +40,9 @@ public class  FileStorage {
         {
             e.printStackTrace();
         }
-        finally
-        {
-
-        }
     }
 
-    //тут надо блок файнали доделать
+
     public static Object readFromFile(String path) {
         try
         {
@@ -67,10 +62,7 @@ public class  FileStorage {
         {
             e.printStackTrace();
         }
-        finally
-        {
-            return null;
-        }
+        return null;
     }
 
     public FileStorage(String path){
@@ -81,5 +73,4 @@ public class  FileStorage {
             windowStateStore = (Map<String, WindowState>) dataObject;
         }
     }
-
 }

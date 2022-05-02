@@ -1,5 +1,8 @@
 package robots.gui.abstractmenu;
 
+import robots.gui.storemanager.WindowState;
+import robots.storage.FileStorage;
+
 import javax.swing.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;

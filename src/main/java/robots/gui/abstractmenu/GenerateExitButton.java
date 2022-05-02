@@ -1,5 +1,4 @@
 package robots.gui.abstractmenu;
-
 import robots.gui.GameWindow;
 import robots.gui.LogWindow;
 
@@ -12,10 +11,7 @@ public class GenerateExitButton {
 
     public void generateUniversalExitButton(EventObject eventObject) {
 
-        Object[] options = {
-                ResourceBundle.getBundle("locale").getString("text.yes"),
-                ResourceBundle.getBundle("locale").getString("text.no")
-        };
+        Object[] options = {"Да", "Нет!"};
         int n = JOptionPane
                 .showOptionDialog(((Component) eventObject.getSource()), ResourceBundle.getBundle("locale").getString("text.closeWindowAsk"),
                         ResourceBundle.getBundle("locale").getString("text.confirm"), JOptionPane.YES_NO_OPTION,
@@ -26,9 +22,10 @@ public class GenerateExitButton {
 
             if ((eventObject.getSource()).getClass() == LogWindow.class) {
                 ((Component) eventObject.getSource()).setVisible(false);
+
             }
 
-            if (((eventObject.getSource()).getClass() == JMenuItem.class) || ((eventObject.getSource()).getClass() == JButton.class)) {
+            if (((eventObject.getSource()).getClass() == JMenuItem.class) || ((eventObject.getSource()).getClass() == JButton.class)){
                 System.exit(0);
             }
 

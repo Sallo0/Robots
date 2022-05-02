@@ -36,4 +36,5 @@ public class WindowState implements Serializable {
     public boolean isClosed() {
         return isClosed;
     }
+
 }
