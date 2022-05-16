@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 public class MainApplicationFrame extends JFrame {
     private final String file = new String(System.getProperty("user.home") + File.separator + "robotState");
     private final JDesktopPane desktopPane = new JDesktopPane();
-    private final FileStorage storage = new FileStorage(file);
+    private FileStorage storage = new FileStorage();
     private final WindowCoordinate coordinateListenerWindow = new WindowCoordinate();
     private final GameWindow gameWindow = new GameWindow();
     private final LogWindow logWindow = new LogWindow(Logger.getDefaultLogSource());
@@ -39,14 +39,41 @@ public class MainApplicationFrame extends JFrame {
                 quitListener();
             }
         });
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                super.windowOpened(e);
+                windowRecover();
+                createLogWindow();
+                createGameWindow();
+                addWindow(logWindow);
+                addWindow(gameWindow);
+            }
+        });
         coordinateListenerWindow.setSize(300, 300);
-        addWindow(coordinateListenerWindow);
-        createLogWindow();
-        addWindow(logWindow);
-        createGameWindow();
-        addWindow(gameWindow);
+        //addWindow(coordinateListenerWindow);
         setJMenuBar(generateMenuBar());
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+    }
+
+    public void windowRecover(){
+        UIManager.put("OptionPane.yesButtonText",
+                ResourceBundle.getBundle("locale").getString("text.yes"));
+        UIManager.put("OptionPane.noButtonText",
+                ResourceBundle.getBundle("locale").getString("text.no"));
+
+        int userAnswer = JOptionPane.showConfirmDialog(this,
+                ResourceBundle.getBundle("locale").getString("text.winRestoreAsk"),
+                ResourceBundle.getBundle("locale").getString("title.confirmWinRestore"),
+                JOptionPane.YES_NO_OPTION);
+
+        if (userAnswer == JOptionPane.NO_OPTION) {
+            storage = new FileStorage();
+        }
+        else{
+            storage = new FileStorage(file);
+        }
     }
 
     public void quitListener() {
@@ -73,6 +100,7 @@ public class MainApplicationFrame extends JFrame {
         try {
             gameWindow.setIcon(gameWindowParams.isIcon());
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -83,7 +111,7 @@ public class MainApplicationFrame extends JFrame {
         try {
             logWindow.setIcon(logWindowParams.isIcon());
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         Logger.debug(ResourceBundle.getBundle("locale").getString("text.protocolWorks"));
     }
