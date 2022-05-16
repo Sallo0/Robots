@@ -8,8 +8,6 @@ import java.util.Map;
 
 public class FileStorage {
     private Map<String, WindowState> windowStateStore = new HashMap<>();
-    private final String file = new String(System.getProperty("user.home") + File.separator + "robotState");
-
 
     public void setState(String window, WindowState state) {
         windowStateStore.put(window, state);
@@ -66,7 +64,7 @@ public class FileStorage {
     }
 
     public FileStorage(String path){
-        var dataObject = readFromFile(file);
+        var dataObject = readFromFile(path);
         if (dataObject == null){
             windowStateStore = new HashMap<>();
         } else {

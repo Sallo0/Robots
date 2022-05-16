@@ -2,45 +2,45 @@ package robots.logic;
 
 public class MoveOperations {
 
-    public MoveOperations(RobotConstants myConst) {
-        this.myConst = myConst;
+    public MoveOperations(RobotConstants robotConstants) {
+        this.robotConstants = robotConstants;
     }
 
     private MathOperations mathOperations = new MathOperations();
-    private RobotConstants myConst;
+    private RobotConstants robotConstants;
 
 
     public void moveRobot(double velocity, double angularVelocity, double duration)
     {
-        velocity = mathOperations.applyLimits(velocity, 0, myConst.getMaxVelocity());
-        angularVelocity = mathOperations.applyLimits(angularVelocity, -myConst.getMaxAngularVelocity(), myConst.getMaxAngularVelocity());
+        velocity = mathOperations.applyLimits(velocity, 0, robotConstants.getMaxVelocity());
+        angularVelocity = mathOperations.applyLimits(angularVelocity, -robotConstants.getMaxAngularVelocity(), robotConstants.getMaxAngularVelocity());
 
 
 
-        double newX = myConst.getM_robotPositionX() + velocity / angularVelocity *
-                (Math.sin(myConst.getM_robotDirection()  + angularVelocity * duration) -
-                        Math.sin(myConst.getM_robotDirection()));
+        double newX = robotConstants.getM_robotPositionX() + velocity / angularVelocity *
+                (Math.sin(robotConstants.getM_robotDirection()  + angularVelocity * duration) -
+                        Math.sin(robotConstants.getM_robotDirection()));
 
 
         if (!Double.isFinite(newX))
         {
-            newX = myConst.getM_robotPositionX() + velocity * duration * Math.cos(myConst.getM_robotDirection());
+            newX = robotConstants.getM_robotPositionX() + velocity * duration * Math.cos(robotConstants.getM_robotDirection());
         }
 
 
-        double newY = myConst.getM_robotPositionY() - velocity / angularVelocity *
-                (Math.cos(myConst.getM_robotDirection() + angularVelocity * duration) -
-                        Math.cos(myConst.getM_robotDirection()));
+        double newY = robotConstants.getM_robotPositionY() - velocity / angularVelocity *
+                (Math.cos(robotConstants.getM_robotDirection() + angularVelocity * duration) -
+                        Math.cos(robotConstants.getM_robotDirection()));
 
 
         if (!Double.isFinite(newY))
         {
-            newY = myConst.getM_robotPositionY() + velocity * duration * Math.sin(myConst.getM_robotDirection());
+            newY = robotConstants.getM_robotPositionY() + velocity * duration * Math.sin(robotConstants.getM_robotDirection());
         }
 
-        myConst.setM_robotPositionX(newX);
-        myConst.setM_robotPositionY(newY);
-        double newDirection = MathOperations.asNormalizedRadians(myConst.getM_robotDirection() + angularVelocity * duration);
-        myConst.setM_robotDirection(newDirection);
+        robotConstants.setM_robotPositionX(newX);
+        robotConstants.setM_robotPositionY(newY);
+        double newDirection = MathOperations.asNormalizedRadians(robotConstants.getM_robotDirection() + angularVelocity * duration);
+        robotConstants.setM_robotDirection(newDirection);
     }
 }

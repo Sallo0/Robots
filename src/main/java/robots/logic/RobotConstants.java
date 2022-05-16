@@ -8,8 +8,8 @@ public class RobotConstants {
     private volatile double m_robotPositionY = 100;
     private volatile double m_robotDirection = 0;
 
-    private volatile int m_targetPositionX = 150;
-    private volatile int m_targetPositionY = 100;
+    private volatile int m_targetPositionX = 500;
+    private volatile int m_targetPositionY = 500;
 
     private final double maxVelocity = 0.1;
     private final double maxAngularVelocity = 0.001;

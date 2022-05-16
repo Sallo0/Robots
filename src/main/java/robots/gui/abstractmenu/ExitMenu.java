@@ -8,12 +8,18 @@ import java.util.ResourceBundle;
 import static javax.swing.UIManager.setLookAndFeel;
 
 public class ExitMenu {
-
+        private JMenu exitMenu;
+        private JMenuItem exitButton;
     public JMenu generateMenuExit(ActionListener actionListener){
-        JMenu exitMenu = new JMenu(ResourceBundle.getBundle("locale").getString("title.actions"));
-        JMenuItem exitButton = new JMenuItem(ResourceBundle.getBundle("locale").getString("text.exit"), KeyEvent.VK_S);
+        exitMenu = new JMenu(ResourceBundle.getBundle("locale").getString("title.actions"));
+        exitButton = new JMenuItem(ResourceBundle.getBundle("locale").getString("text.exit"), KeyEvent.VK_S);
         exitButton.addActionListener(actionListener);
         exitMenu.add(exitButton);
         return exitMenu;
+    }
+
+    public void changeLocale(){
+        exitMenu.setText(ResourceBundle.getBundle("locale").getString("title.actions"));
+        exitButton.setText(ResourceBundle.getBundle("locale").getString("text.exit"));
     }
 }

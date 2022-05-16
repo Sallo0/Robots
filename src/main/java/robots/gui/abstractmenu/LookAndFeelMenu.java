@@ -6,16 +6,18 @@ import java.util.ResourceBundle;
 
 import static javax.swing.UIManager.setLookAndFeel;
 
-public class GenerateMenuLeft extends JFrame{
-
-    public JMenu generateMenuLeft(){
-        JMenu lookAndFeelMenu = new JMenu(ResourceBundle.getBundle("locale").getString("title.viewMode"));
-        JMenuItem systemLookAndFeel = new JMenuItem(ResourceBundle.getBundle("locale").getString("text.systemScheme"), KeyEvent.VK_S);
+public class LookAndFeelMenu extends JFrame{
+    public JMenu lookAndFeelMenu;
+    private JMenuItem systemLookAndFeel;
+    private JMenuItem crossplatformLookAndFeel;
+    public JMenu generateLookAndFeelMenu(){
+        lookAndFeelMenu = new JMenu(ResourceBundle.getBundle("locale").getString("title.viewMode"));
+        systemLookAndFeel = new JMenuItem(ResourceBundle.getBundle("locale").getString("text.systemScheme"), KeyEvent.VK_S);
         systemLookAndFeel.addActionListener((event) -> {
             setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             this.invalidate();
         });
-        JMenuItem crossplatformLookAndFeel = new JMenuItem(ResourceBundle.getBundle("locale").getString("text.universalScheme"), KeyEvent.VK_S);
+        crossplatformLookAndFeel = new JMenuItem(ResourceBundle.getBundle("locale").getString("text.universalScheme"), KeyEvent.VK_S);
         crossplatformLookAndFeel.addActionListener((event) -> {
             setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
             this.invalidate();
@@ -23,6 +25,12 @@ public class GenerateMenuLeft extends JFrame{
         lookAndFeelMenu.add(crossplatformLookAndFeel);
         lookAndFeelMenu.add(systemLookAndFeel);
         return lookAndFeelMenu;
+    }
+
+    public void changeLocale(){
+        lookAndFeelMenu.setText(ResourceBundle.getBundle("locale").getString("title.viewMode"));
+        systemLookAndFeel.setText(ResourceBundle.getBundle("locale").getString("text.systemScheme"));
+        crossplatformLookAndFeel.setText(ResourceBundle.getBundle("locale").getString("text.universalScheme"));
     }
 
 

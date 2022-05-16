@@ -7,14 +7,14 @@ public class WindowState implements Serializable {
     private final int width;
     private final int locationX;
     private final int locationY;
-    private final boolean isClosed;
+    private final boolean isIcon;
 
-    public WindowState(int width, int height, int locationX, int locationY, boolean isClosed) {
+    public WindowState(int width, int height, int locationX, int locationY, boolean isIcon) {
         this.width = width;
         this.height = height;
         this.locationX = locationX;
         this.locationY = locationY;
-        this.isClosed = isClosed;
+        this.isIcon = isIcon;
     }
 
     public int getWidth() {
@@ -33,8 +33,8 @@ public class WindowState implements Serializable {
         return locationY;
     }
 
-    public boolean isClosed() {
-        return isClosed;
+    public boolean isIcon() {
+        return isIcon;
     }
 
 }

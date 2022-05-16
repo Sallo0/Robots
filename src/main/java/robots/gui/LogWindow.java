@@ -5,9 +5,11 @@ import java.awt.EventQueue;
 import java.awt.TextArea;
 import java.util.ResourceBundle;
 
-import javax.swing.JInternalFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
+import robots.gui.abstractmenu.GenerateExitButton;
 import robots.log.LogChangeListener;
 import robots.log.LogEntry;
 import robots.log.LogWindowSource;
@@ -28,6 +30,14 @@ public class LogWindow extends JInternalFrame implements LogChangeListener
         panel.add(m_logContent, BorderLayout.CENTER);
         getContentPane().add(panel);
         updateLogContent();
+        GenerateExitButton exitButton = new GenerateExitButton();
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addInternalFrameListener(new InternalFrameAdapter() {
+            @Override
+            public void internalFrameClosing(InternalFrameEvent e) {
+                exitButton.generateUniversalExitButton(e);
+            }
+        });
     }
 
     private void updateLogContent()

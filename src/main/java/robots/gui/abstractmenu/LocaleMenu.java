@@ -1,22 +1,22 @@
 package robots.gui.abstractmenu;
 
-import robots.gui.storemanager.WindowState;
-import robots.storage.FileStorage;
-
 import javax.swing.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class GenerateLocaleButton {
-    public JMenu generateLocaleButton(ItemListener onChange) {
-        JMenu exitMenu = new JMenu(ResourceBundle.getBundle("locale").getString("title.changeLanguage"));
-        JRadioButtonMenuItem russianLocale = new JRadioButtonMenuItem("Русский");
-        JRadioButtonMenuItem englishLocale = new JRadioButtonMenuItem("English");
-        ButtonGroup bg = new ButtonGroup();
-        bg.add(russianLocale);
-        bg.add(englishLocale);
+public class LocaleMenu {
+    private JMenu localeMenu;
+    private JRadioButtonMenuItem russianLocale;
+    private JRadioButtonMenuItem englishLocale;
+    public JMenu generateLocaleMenu(ItemListener onChange) {
+        localeMenu = new JMenu(ResourceBundle.getBundle("locale").getString("title.changeLanguage"));
+        russianLocale = new JRadioButtonMenuItem("Русский");
+        englishLocale = new JRadioButtonMenuItem("English");
+        ButtonGroup buttonGroup = new ButtonGroup();
+        buttonGroup.add(russianLocale);
+        buttonGroup.add(englishLocale);
         russianLocale.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -35,8 +35,12 @@ public class GenerateLocaleButton {
         });
         englishLocale.addItemListener(onChange);
         russianLocale.addItemListener(onChange);
-        exitMenu.add(russianLocale);
-        exitMenu.add(englishLocale);
-        return exitMenu;
+        localeMenu.add(russianLocale);
+        localeMenu.add(englishLocale);
+        return localeMenu;
+    }
+
+    public void changeLocale(){
+        localeMenu.setText(ResourceBundle.getBundle("locale").getString("title.changeLanguage"));
     }
 }
