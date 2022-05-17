@@ -2,7 +2,9 @@ package robots.storage;
 
 import robots.gui.storemanager.WindowState;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,10 +13,10 @@ import java.util.Map;
 import java.util.Objects;
 
 public class FileStorage {
-    private Map<String, WindowState> windowStateStore;
     private static final File file = new File(System.getProperty("user.home") + File.separator + "robotState");
+    private final Map<String, WindowState> windowStateStore;
 
-    public FileStorage(){
+    public FileStorage() {
         windowStateStore = new HashMap<>();
     }
 
@@ -26,40 +28,6 @@ public class FileStorage {
             windowStateStore = (Map<String, WindowState>) dataObject;
         }
     }
-
-    public void setState(String window, WindowState state) {
-        windowStateStore.put(window, state);
-    }
-
-    public WindowState getState(String key) {
-        if (windowStateStore.get(key) == null) {
-            windowStateStore.put(key, new WindowState(800, 800, 10, 10, false));
-        }
-        return windowStateStore.get(key);
-    }
-
-    public void saveToFile(String path) {
-        try {
-            FileOutputStream fileOut = new FileOutputStream(path);
-            var sb = new StringBuilder();
-            for (var entry : windowStateStore.entrySet()) {
-                var key = entry.getKey();
-                var state = entry.getValue();
-                sb.append(String.format("%s{\nheight=%d\nwidth=%d\nlocationX=%d\nlocationY=%d\nisIcon=%b\n}\n",
-                        key,
-                        state.getHeight(),
-                        state.getWidth(),
-                        state.getLocationX(),
-                        state.getLocationY(),
-                        state.isIcon()));
-            }
-            fileOut.write(sb.toString().getBytes(StandardCharsets.UTF_8));
-            fileOut.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
 
     public static Object readFromFile(String path) {
         if (file.exists()) {
@@ -107,5 +75,38 @@ public class FileStorage {
             }
         }
         return null;
+    }
+
+    public void setState(String window, WindowState state) {
+        windowStateStore.put(window, state);
+    }
+
+    public WindowState getState(String key) {
+        if (windowStateStore.get(key) == null) {
+            windowStateStore.put(key, new WindowState(800, 800, 10, 10, false));
+        }
+        return windowStateStore.get(key);
+    }
+
+    public void saveToFile(String path) {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(path);
+            var sb = new StringBuilder();
+            for (var entry : windowStateStore.entrySet()) {
+                var key = entry.getKey();
+                var state = entry.getValue();
+                sb.append(String.format("%s{\nheight=%d\nwidth=%d\nlocationX=%d\nlocationY=%d\nisIcon=%b\n}\n",
+                        key,
+                        state.getHeight(),
+                        state.getWidth(),
+                        state.getLocationX(),
+                        state.getLocationY(),
+                        state.isIcon()));
+            }
+            fileOut.write(sb.toString().getBytes(StandardCharsets.UTF_8));
+            fileOut.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

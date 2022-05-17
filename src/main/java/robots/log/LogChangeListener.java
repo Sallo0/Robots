@@ -1,7 +1,7 @@
 package robots.log;
 
-public interface LogChangeListener
-{
-    public void onLogChanged();
-    public void unregister();
+public interface LogChangeListener {
+    void onLogChanged();
+
+    void unregister();
 }

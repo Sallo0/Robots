@@ -6,43 +6,36 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Cordinate extends JPanel {
-    private Timer timer = initTime();
+    private final Timer timer = initTime();
     private String count = "start";
     JTextArea textArea = new JTextArea(count);
-
-
-    private static java.util.Timer initTime()
-    {
-        java.util.Timer timer = new Timer("events", true);
-        return timer;
-    }
-
-
-    @Override
-    public void paint(Graphics g)
-    {
-        super.paint(g);
-        JTextArea textArea = this.textArea;
-    }
 
 
     public Cordinate() {
         setBackground(Color.white);
         add(textArea);
-        timer.schedule(new TimerTask()
-        {
+        timer.schedule(new TimerTask() {
             @Override
-            public void run()
-            {
+            public void run() {
                 printSome();
 
             }
-        },0,100);
+        }, 0, 100);
     }
 
+    private static java.util.Timer initTime() {
+        java.util.Timer timer = new Timer("events", true);
+        return timer;
+    }
 
-    private void printSome(){
-        this.count = String.valueOf(( Math.random() * (10-1) ) +1);
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        JTextArea textArea = this.textArea;
+    }
+
+    private void printSome() {
+        this.count = String.valueOf((Math.random() * (10 - 1)) + 1);
         System.out.println(count);
         textArea = new JTextArea(count);
 

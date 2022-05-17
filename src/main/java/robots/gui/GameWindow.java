@@ -1,34 +1,48 @@
 package robots.gui;
 
-import robots.gui.abstractmenu.GenerateExitButton;
+import robots.gui.abstractmenu.DialogGenerator;
+import robots.gui.storemanager.WindowState;
 
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import java.util.ResourceBundle;
 
-public class GameWindow extends JInternalFrame
-{
-    private final GameVisualizer m_visualizer;
-    public GameWindow()
-    {
+public class GameWindow extends JInternalFrame {
+    private final DialogGenerator exitDialog = new DialogGenerator();
+
+    public GameWindow() {
         super(ResourceBundle.getBundle("locale").getString("title.gameField"),
                 true,
                 true,
                 true,
                 true
         );
-        m_visualizer = new GameVisualizer();
+        GameVisualizer m_visualizer = new GameVisualizer();
         add(m_visualizer);
         pack();
-        GenerateExitButton exitButton = new GenerateExitButton();
+
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         addInternalFrameListener(new InternalFrameAdapter() {
             @Override
             public void internalFrameClosing(InternalFrameEvent e) {
-                exitButton.generateUniversalExitButton(e);
+                exitDialog.windowExitDialog(e);
             }
         });
+    }
+
+    public void setParams(WindowState windowState) {
+        this.setSize(windowState.getWidth(), windowState.getHeight());
+        this.setLocation(windowState.getLocationX(), windowState.getLocationY());
+        try {
+            this.setIcon(windowState.isIcon());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void changeLocale() {
+        this.setTitle(ResourceBundle.getBundle("locale").getString("title.gameField"));
     }
 }
 

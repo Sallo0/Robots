@@ -1,26 +1,24 @@
 package robots.gui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.TextArea;
-import java.util.ResourceBundle;
+import robots.gui.abstractmenu.DialogGenerator;
+import robots.gui.storemanager.WindowState;
+import robots.log.LogChangeListener;
+import robots.log.LogEntry;
+import robots.log.LogWindowSource;
+import robots.log.Logger;
 
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
+import java.awt.*;
+import java.util.ResourceBundle;
 
-import robots.gui.abstractmenu.GenerateExitButton;
-import robots.log.LogChangeListener;
-import robots.log.LogEntry;
-import robots.log.LogWindowSource;
+public class LogWindow extends JInternalFrame implements LogChangeListener {
+    private final LogWindowSource m_logSource;
+    private final TextArea m_logContent;
+    private final DialogGenerator exitDialog = new DialogGenerator();
 
-public class LogWindow extends JInternalFrame implements LogChangeListener
-{
-    private LogWindowSource m_logSource;
-    private TextArea m_logContent;
-
-    public LogWindow(LogWindowSource logSource)
-    {
+    public LogWindow(LogWindowSource logSource) {
         super(ResourceBundle.getBundle("locale").getString("text.protocolOfWork"), true, true, true, true);
         m_logSource = logSource;
         m_logSource.registerListener(this);
@@ -30,30 +28,42 @@ public class LogWindow extends JInternalFrame implements LogChangeListener
         panel.add(m_logContent, BorderLayout.CENTER);
         getContentPane().add(panel);
         updateLogContent();
-        GenerateExitButton exitButton = new GenerateExitButton();
+
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         addInternalFrameListener(new InternalFrameAdapter() {
             @Override
             public void internalFrameClosing(InternalFrameEvent e) {
-                exitButton.generateUniversalExitButton(e);
+                exitDialog.windowExitDialog(e);
             }
         });
     }
 
-    private void updateLogContent()
-    {
+    private void updateLogContent() {
         StringBuilder content = new StringBuilder();
-        for (LogEntry entry : m_logSource.all())
-        {
+        for (LogEntry entry : m_logSource.all()) {
             content.append(entry.getMessage()).append("\n");
         }
         m_logContent.setText(content.toString());
         m_logContent.invalidate();
     }
 
+    public void setParams(WindowState windowState) {
+        this.setSize(windowState.getWidth(), windowState.getHeight());
+        this.setLocation(windowState.getLocationX(), windowState.getLocationY());
+        try {
+            this.setIcon(windowState.isIcon());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Logger.debug(ResourceBundle.getBundle("locale").getString("text.protocolWorks"));
+    }
+
+    public void changeLocale() {
+        this.setTitle(ResourceBundle.getBundle("locale").getString("text.protocolOfWork"));
+    }
+
     @Override
-    public void onLogChanged()
-    {
+    public void onLogChanged() {
         EventQueue.invokeLater(this::updateLogContent);
     }
 

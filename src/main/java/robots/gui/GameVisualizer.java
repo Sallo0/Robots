@@ -4,29 +4,19 @@ import robots.logic.MathOperations;
 import robots.logic.MoveOperations;
 import robots.logic.RobotConstants;
 
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.swing.JPanel;
-
 public class GameVisualizer extends JPanel {
-    private RobotConstants robotConstants = new RobotConstants();
-    private MoveOperations moveOperations = new MoveOperations(robotConstants);
-    private MathOperations mathOperations = new MathOperations();
     private final java.util.Timer m_timer = initTimer();
-
-    private static java.util.Timer initTimer() {
-        java.util.Timer timer = new Timer("events generator", true);
-        return timer;
-    }
+    private final RobotConstants robotConstants = new RobotConstants();
+    private final MoveOperations moveOperations = new MoveOperations(robotConstants);
+    private final MathOperations mathOperations = new MathOperations();
 
     public GameVisualizer() {
         m_timer.schedule(new TimerTask() {
@@ -49,6 +39,19 @@ public class GameVisualizer extends JPanel {
             }
         });
         setDoubleBuffered(true);
+    }
+
+    private static java.util.Timer initTimer() {
+        java.util.Timer timer = new Timer("events generator", true);
+        return timer;
+    }
+
+    private static void fillOval(Graphics g, int centerX, int centerY, int diam1, int diam2) {
+        g.fillOval(centerX - diam1 / 2, centerY - diam2 / 2, diam1, diam2);
+    }
+
+    private static void drawOval(Graphics g, int centerX, int centerY, int diam1, int diam2) {
+        g.drawOval(centerX - diam1 / 2, centerY - diam2 / 2, diam1, diam2);
     }
 
     protected void onModelUpdateEvent() {
@@ -115,14 +118,6 @@ public class GameVisualizer extends JPanel {
         g.setColor(Color.BLACK);
         drawOval(g, robotCenterX + 10, robotCenterY, 5, 5);
         g.setTransform(old);
-    }
-
-    private static void fillOval(Graphics g, int centerX, int centerY, int diam1, int diam2) {
-        g.fillOval(centerX - diam1 / 2, centerY - diam2 / 2, diam1, diam2);
-    }
-
-    private static void drawOval(Graphics g, int centerX, int centerY, int diam1, int diam2) {
-        g.drawOval(centerX - diam1 / 2, centerY - diam2 / 2, diam1, diam2);
     }
 
     private void drawTarget(Graphics2D g, int x, int y) {

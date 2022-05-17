@@ -7,15 +7,16 @@ import java.awt.event.KeyEvent;
 import java.util.ResourceBundle;
 
 public class TestsMenu {
-    private JMenu testsMenu;
-    private JMenuItem addLogMessageItem;
-    public JMenu generateTestsMenu(){
-        testsMenu = new JMenu(ResourceBundle.getBundle("locale").getString("title.tests"));
+
+    private final JMenu testsMenu = new JMenu(ResourceBundle.getBundle("locale").getString("title.tests"));
+    private final JMenuItem addLogMessageItem = new JMenuItem(ResourceBundle.getBundle("locale").getString("title.log"), KeyEvent.VK_S);
+
+
+    public JMenu generateTestsMenu() {
         testsMenu.setMnemonic(KeyEvent.VK_T);
         testsMenu.getAccessibleContext().setAccessibleDescription(
                 ResourceBundle.getBundle("locale").getString("text.testCommands"));
 
-        addLogMessageItem = new JMenuItem(ResourceBundle.getBundle("locale").getString("title.log"), KeyEvent.VK_S);
         addLogMessageItem.addActionListener((event) -> {
             Logger.debug(ResourceBundle.getBundle("locale").getString("text.newString"));
         });
@@ -24,7 +25,7 @@ public class TestsMenu {
         return testsMenu;
     }
 
-    public void changeLocale(){
+    public void changeLocale() {
         testsMenu.setText(ResourceBundle.getBundle("locale").getString("title.tests"));
         testsMenu.getAccessibleContext().setAccessibleDescription(
                 ResourceBundle.getBundle("locale").getString("text.testCommands"));

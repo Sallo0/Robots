@@ -2,28 +2,23 @@ package robots.logic;
 
 public class MoveOperations {
 
+    private final MathOperations mathOperations = new MathOperations();
+    private final RobotConstants robotConstants;
     public MoveOperations(RobotConstants robotConstants) {
         this.robotConstants = robotConstants;
     }
 
-    private MathOperations mathOperations = new MathOperations();
-    private RobotConstants robotConstants;
-
-
-    public void moveRobot(double velocity, double angularVelocity, double duration)
-    {
-        velocity = mathOperations.applyLimits(velocity, 0, robotConstants.getMaxVelocity());
-        angularVelocity = mathOperations.applyLimits(angularVelocity, -robotConstants.getMaxAngularVelocity(), robotConstants.getMaxAngularVelocity());
-
+    public void moveRobot(double velocity, double angularVelocity, double duration) {
+        velocity = MathOperations.applyLimits(velocity, 0, robotConstants.getMaxVelocity());
+        angularVelocity = MathOperations.applyLimits(angularVelocity, -robotConstants.getMaxAngularVelocity(), robotConstants.getMaxAngularVelocity());
 
 
         double newX = robotConstants.getM_robotPositionX() + velocity / angularVelocity *
-                (Math.sin(robotConstants.getM_robotDirection()  + angularVelocity * duration) -
+                (Math.sin(robotConstants.getM_robotDirection() + angularVelocity * duration) -
                         Math.sin(robotConstants.getM_robotDirection()));
 
 
-        if (!Double.isFinite(newX))
-        {
+        if (!Double.isFinite(newX)) {
             newX = robotConstants.getM_robotPositionX() + velocity * duration * Math.cos(robotConstants.getM_robotDirection());
         }
 
@@ -33,8 +28,7 @@ public class MoveOperations {
                         Math.cos(robotConstants.getM_robotDirection()));
 
 
-        if (!Double.isFinite(newY))
-        {
+        if (!Double.isFinite(newY)) {
             newY = robotConstants.getM_robotPositionY() + velocity * duration * Math.sin(robotConstants.getM_robotDirection());
         }
 

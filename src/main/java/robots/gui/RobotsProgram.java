@@ -1,12 +1,7 @@
 package robots.gui;
 
-import robots.storage.FileStorage;
-
-import java.awt.Frame;
-import java.io.File;
-
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import javax.swing.*;
+import java.awt.*;
 
 public class RobotsProgram {
     public static void main(String[] args) {
