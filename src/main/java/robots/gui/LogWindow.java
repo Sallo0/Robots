@@ -13,7 +13,7 @@ import javax.swing.event.InternalFrameEvent;
 import java.awt.*;
 import java.util.ResourceBundle;
 
-public class LogWindow extends JInternalFrame implements LogChangeListener {
+public class LogWindow extends JInternalFrame implements LogChangeListener,ILocalable,ISaveable {
     private final LogWindowSource m_logSource;
     private final TextArea m_logContent;
     private final DialogGenerator exitDialog = new DialogGenerator();
@@ -36,6 +36,7 @@ public class LogWindow extends JInternalFrame implements LogChangeListener {
                 exitDialog.windowExitDialog(e);
             }
         });
+        LocalableComponents.components.add(this);
     }
 
     private void updateLogContent() {
@@ -58,6 +59,7 @@ public class LogWindow extends JInternalFrame implements LogChangeListener {
         Logger.debug(ResourceBundle.getBundle("locale").getString("text.protocolWorks"));
     }
 
+    @Override
     public void changeLocale() {
         this.setTitle(ResourceBundle.getBundle("locale").getString("text.protocolOfWork"));
     }
@@ -76,6 +78,17 @@ public class LogWindow extends JInternalFrame implements LogChangeListener {
     public void dispose() {
         unregister();
         super.dispose();
+    }
+
+    @Override
+    public WindowState windowParams() {
+        return new WindowState(
+                getWidth(),
+                getHeight(),
+                getX(),
+                getY(),
+                isIcon()
+        );
     }
 }
 

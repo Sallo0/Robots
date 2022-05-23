@@ -14,7 +14,7 @@ import java.util.EventObject;
 public class MainApplicationFrame extends JFrame {
     private final String file = System.getProperty("user.home") + File.separator + "robotState";
     private final JDesktopPane desktopPane = new JDesktopPane();
-    private final WindowCoordinate coordinateListenerWindow = new WindowCoordinate();
+    private final CoordinateWindow coordinateListenerWindow = new CoordinateWindow();
     private final GameWindow gameWindow = new GameWindow();
     private final LogWindow logWindow = new LogWindow(Logger.getDefaultLogSource());
     private final LookAndFeelMenu lookAndFeelMenu = new LookAndFeelMenu();
@@ -44,14 +44,14 @@ public class MainApplicationFrame extends JFrame {
                 storage = dialogGenerator.windowsRecoverDialogResult(e) == JOptionPane.NO_OPTION
                         ? new FileStorage()
                         : new FileStorage(file);
-                logWindow.setParams(storage.getState("logWindow"));
-                gameWindow.setParams(storage.getState("gameWindow"));
+                logWindow.setParams(storage.getState(logWindow.getClass().getName()));
+                gameWindow.setParams(storage.getState(gameWindow.getClass().getName()));
+                coordinateListenerWindow.setParams(storage.getState(coordinateListenerWindow.getClass().getName()));
                 addWindow(logWindow);
                 addWindow(gameWindow);
+                addWindow(coordinateListenerWindow);
             }
         });
-        //coordinateListenerWindow.setSize(300, 300);
-        //addWindow(coordinateListenerWindow);
         setJMenuBar(generateMenuBar());
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
@@ -63,14 +63,9 @@ public class MainApplicationFrame extends JFrame {
 
     private ItemListener onChange() {
         return e -> SwingUtilities.invokeLater(() -> {
-            logWindow.changeLocale();
-            gameWindow.changeLocale();
-            coordinateListenerWindow.changeLocale();
-            lookAndFeelMenu.changeLocale();
-            testsMenu.changeLocale();
-            localeMenu.changeLocale();
-            exitMenu.changeLocale();
-            dialogGenerator.changeLocale();
+            for (ILocalable component: LocalableComponents.components){
+                component.changeLocale();
+            }
         });
     }
 
@@ -91,18 +86,9 @@ public class MainApplicationFrame extends JFrame {
     }
 
     private void saveParamsToFile() {
-        storage.setState("gameWindow", new WindowState(
-                gameWindow.getWidth(),
-                gameWindow.getHeight(),
-                gameWindow.getX(),
-                gameWindow.getY(),
-                gameWindow.isIcon()));
-        storage.setState("logWindow", new WindowState(
-                logWindow.getWidth(),
-                logWindow.getHeight(),
-                logWindow.getX(),
-                logWindow.getY(),
-                logWindow.isIcon()));
+        for (var i: desktopPane.getAllFrames()){
+            storage.setState(i.getClass().getName(),((ISaveable) i).windowParams());
+        }
         storage.saveToFile(file);
     }
 }

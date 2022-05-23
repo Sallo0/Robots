@@ -8,7 +8,7 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import java.util.ResourceBundle;
 
-public class GameWindow extends JInternalFrame {
+public class GameWindow extends JInternalFrame implements ILocalable,ISaveable {
     private final DialogGenerator exitDialog = new DialogGenerator();
 
     public GameWindow() {
@@ -29,6 +29,7 @@ public class GameWindow extends JInternalFrame {
                 exitDialog.windowExitDialog(e);
             }
         });
+        LocalableComponents.components.add(this);
     }
 
     public void setParams(WindowState windowState) {
@@ -41,8 +42,21 @@ public class GameWindow extends JInternalFrame {
         }
     }
 
+    @Override
     public void changeLocale() {
         this.setTitle(ResourceBundle.getBundle("locale").getString("title.gameField"));
     }
+
+    @Override
+    public WindowState windowParams() {
+        return new WindowState(
+                getWidth(),
+                getHeight(),
+                getX(),
+                getY(),
+                isIcon()
+        );
+    }
+
 }
 

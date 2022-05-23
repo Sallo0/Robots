@@ -9,11 +9,6 @@ import java.util.EventObject;
 import java.util.ResourceBundle;
 
 public class DialogGenerator {
-    private static final Object[] options = {
-            ResourceBundle.getBundle("locale").getString("text.yes"),
-            ResourceBundle.getBundle("locale").getString("text.no")
-    };
-
 
     private int dialogTemplate(String title, String text, EventObject eventObject) {
         return JOptionPane.showOptionDialog(
@@ -23,14 +18,12 @@ public class DialogGenerator {
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
-                options,
-                options[0]
+                new String[]{
+                        ResourceBundle.getBundle("locale").getString("text.yes"),
+                        ResourceBundle.getBundle("locale").getString("text.no")
+                },
+                ResourceBundle.getBundle("locale").getString("text.yes")
         );
-    }
-
-    public void changeLocale() {
-        options[0] = ResourceBundle.getBundle("locale").getString("text.yes");
-        options[1] = ResourceBundle.getBundle("locale").getString("text.no");
     }
 
     public int appExitDialogResult(EventObject eventObject) {

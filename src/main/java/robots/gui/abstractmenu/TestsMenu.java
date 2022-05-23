@@ -1,16 +1,21 @@
 package robots.gui.abstractmenu;
 
+import robots.gui.ILocalable;
+import robots.gui.LocalableComponents;
 import robots.log.Logger;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.util.ResourceBundle;
 
-public class TestsMenu {
+public class TestsMenu implements ILocalable {
 
     private final JMenu testsMenu = new JMenu(ResourceBundle.getBundle("locale").getString("title.tests"));
     private final JMenuItem addLogMessageItem = new JMenuItem(ResourceBundle.getBundle("locale").getString("title.log"), KeyEvent.VK_S);
 
+    public TestsMenu(){
+        LocalableComponents.components.add(this);
+    }
 
     public JMenu generateTestsMenu() {
         testsMenu.setMnemonic(KeyEvent.VK_T);

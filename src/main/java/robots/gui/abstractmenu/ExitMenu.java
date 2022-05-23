@@ -1,13 +1,20 @@
 package robots.gui.abstractmenu;
 
+import robots.gui.ILocalable;
+import robots.gui.LocalableComponents;
+
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ResourceBundle;
 
-public class ExitMenu {
+public class ExitMenu implements ILocalable {
     private JMenu exitMenu;
     private JMenuItem exitButton;
+
+    public ExitMenu(){
+        LocalableComponents.components.add(this);
+    }
 
     public JMenu generateMenuExit(ActionListener actionListener) {
         exitMenu = new JMenu(ResourceBundle.getBundle("locale").getString("title.actions"));
