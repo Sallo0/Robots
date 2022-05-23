@@ -1,13 +1,20 @@
 package robots.gui;
 
 import robots.gui.abstractmenu.*;
-import robots.gui.storemanager.WindowState;
+import robots.gui.windows.CoordinateWindow;
+import robots.gui.windows.GameWindow;
+import robots.gui.windows.LogWindow;
+import robots.locale.ILocalable;
+import robots.locale.LocalableComponents;
 import robots.log.Logger;
 import robots.storage.FileStorage;
+import robots.storage.ISaveable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ItemListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.EventObject;
 
@@ -63,17 +70,17 @@ public class MainApplicationFrame extends JFrame {
 
     private ItemListener onChange() {
         return e -> SwingUtilities.invokeLater(() -> {
-            for (ILocalable component: LocalableComponents.components){
+            for (ILocalable component : LocalableComponents.components) {
                 component.changeLocale();
             }
         });
     }
 
     private void quit(EventObject e) {
-            if (dialogGenerator.appExitDialogResult(e) == JOptionPane.YES_OPTION) {
-                saveParamsToFile();
-                System.exit(0);
-        };
+        if (dialogGenerator.appExitDialogResult(e) == JOptionPane.YES_OPTION) {
+            saveParamsToFile();
+            System.exit(0);
+        }
     }
 
     private JMenuBar generateMenuBar() {
@@ -86,8 +93,8 @@ public class MainApplicationFrame extends JFrame {
     }
 
     private void saveParamsToFile() {
-        for (var i: desktopPane.getAllFrames()){
-            storage.setState(i.getClass().getName(),((ISaveable) i).windowParams());
+        for (JInternalFrame frame : desktopPane.getAllFrames()) {
+            storage.setState(frame.getClass().getName(), ((ISaveable) frame).windowParams());
         }
         storage.saveToFile(file);
     }

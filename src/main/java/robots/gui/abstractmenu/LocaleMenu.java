@@ -1,20 +1,13 @@
 package robots.gui.abstractmenu;
 
-import robots.gui.ILocalable;
-import robots.gui.LocalableComponents;
-
 import javax.swing.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class LocaleMenu implements ILocalable {
+public class LocaleMenu extends AbstractMenu {
     private final JMenu localeMenu = new JMenu(ResourceBundle.getBundle("locale").getString("title.changeLanguage"));
-
-    public LocaleMenu(){
-        LocalableComponents.components.add(this);
-    }
 
     public JMenu generateLocaleMenu(ItemListener onChange) {
         JRadioButtonMenuItem russianLocale = new JRadioButtonMenuItem("Русский");
@@ -42,6 +35,7 @@ public class LocaleMenu implements ILocalable {
         return localeMenu;
     }
 
+    @Override
     public void changeLocale() {
         localeMenu.setText(ResourceBundle.getBundle("locale").getString("title.changeLanguage"));
     }

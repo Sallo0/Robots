@@ -1,7 +1,5 @@
 package robots.storage;
 
-import robots.gui.storemanager.WindowState;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

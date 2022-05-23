@@ -1,7 +1,7 @@
 package robots.gui.abstractmenu;
 
-import robots.gui.GameWindow;
-import robots.gui.LogWindow;
+import robots.gui.windows.GameWindow;
+import robots.gui.windows.LogWindow;
 
 import javax.swing.*;
 import java.awt.*;

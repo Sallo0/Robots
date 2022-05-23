@@ -1,4 +1,4 @@
-package robots.gui.storemanager;
+package robots.storage;
 
 import java.io.Serializable;
 

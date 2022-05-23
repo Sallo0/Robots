@@ -1,4 +1,4 @@
-package robots.gui;
+package robots.locale;
 
 import java.util.ArrayList;
 

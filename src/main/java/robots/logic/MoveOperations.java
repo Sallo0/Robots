@@ -4,6 +4,7 @@ public class MoveOperations {
 
     private final MathOperations mathOperations = new MathOperations();
     private final RobotConstants robotConstants;
+
     public MoveOperations(RobotConstants robotConstants) {
         this.robotConstants = robotConstants;
     }
