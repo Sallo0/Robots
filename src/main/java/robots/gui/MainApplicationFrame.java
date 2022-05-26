@@ -7,6 +7,7 @@ import robots.gui.windows.LogWindow;
 import robots.locale.ILocalable;
 import robots.locale.LocalableComponents;
 import robots.log.Logger;
+import robots.logic.RobotConstants;
 import robots.storage.FileStorage;
 import robots.storage.ISaveable;
 
@@ -21,8 +22,9 @@ import java.util.EventObject;
 public class MainApplicationFrame extends JFrame {
     private final String file = System.getProperty("user.home") + File.separator + "robotState";
     private final JDesktopPane desktopPane = new JDesktopPane();
-    private final CoordinateWindow coordinateListenerWindow = new CoordinateWindow();
-    private final GameWindow gameWindow = new GameWindow();
+    private final RobotConstants robotConstants = new RobotConstants();
+    private final CoordinateWindow coordinateListenerWindow = new CoordinateWindow(robotConstants);
+    private final GameWindow gameWindow = new GameWindow(robotConstants);
     private final LogWindow logWindow = new LogWindow(Logger.getDefaultLogSource());
     private final LookAndFeelMenu lookAndFeelMenu = new LookAndFeelMenu();
     private final TestsMenu testsMenu = new TestsMenu();
@@ -57,6 +59,7 @@ public class MainApplicationFrame extends JFrame {
                 addWindow(logWindow);
                 addWindow(gameWindow);
                 addWindow(coordinateListenerWindow);
+                robotConstants.addObserver(coordinateListenerWindow);
             }
         });
         setJMenuBar(generateMenuBar());

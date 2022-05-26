@@ -2,6 +2,7 @@ package robots.gui.windows;
 
 import robots.gui.GameVisualizer;
 import robots.gui.abstractmenu.DialogGenerator;
+import robots.logic.RobotConstants;
 
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
@@ -11,14 +12,14 @@ import java.util.ResourceBundle;
 public class GameWindow extends AbstractWindow {
     private final DialogGenerator exitDialog = new DialogGenerator();
 
-    public GameWindow() {
+    public GameWindow(RobotConstants robotConstants) {
         super(ResourceBundle.getBundle("locale").getString("title.gameField"),
                 true,
                 true,
                 true,
                 true
         );
-        GameVisualizer m_visualizer = new GameVisualizer();
+        GameVisualizer m_visualizer = new GameVisualizer(robotConstants);
         add(m_visualizer);
         pack();
 
