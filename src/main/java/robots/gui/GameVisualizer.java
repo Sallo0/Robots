@@ -13,7 +13,6 @@ import java.util.TimerTask;
 
 public class GameVisualizer extends JPanel {
     private final RobotConstants robotConstants;
-    private final MathOperations mathOperations = new MathOperations();
 
     public GameVisualizer(RobotConstants robotConstants) {
         this.robotConstants = robotConstants;
@@ -75,8 +74,8 @@ public class GameVisualizer extends JPanel {
 
         drawRobot(
                 g2d,
-                mathOperations.round(robotConstants.getRobotPositionX()),
-                mathOperations.round(robotConstants.getRobotPositionY()),
+                MathOperations.round(robotConstants.getRobotPositionX()),
+                MathOperations.round(robotConstants.getRobotPositionY()),
                 robotConstants.getRobotDirection()
         );
     }

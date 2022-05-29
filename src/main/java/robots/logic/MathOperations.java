@@ -33,7 +33,7 @@ public class MathOperations {
         return asNormalizedRadians(Math.atan2(diffY, diffX));
     }
 
-    public int round(double value) {
+    public static int round(double value) {
         return (int) (value + 0.5);
     }
 }
