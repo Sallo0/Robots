@@ -6,7 +6,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Cordinate extends JPanel {
-    private final Timer timer = initTime();
     private String count = "start";
     JTextArea textArea = new JTextArea(count);
 
@@ -14,6 +13,7 @@ public class Cordinate extends JPanel {
     public Cordinate() {
         setBackground(Color.white);
         add(textArea);
+        Timer timer = initTime();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {

@@ -1,30 +1,49 @@
 package robots.logic;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Observable;
 
-public class RobotConstants extends Observable{
-    private MoveOperations moveOperations = new MoveOperations(this);
+public class RobotConstants extends Observable {
+    private final MoveOperations moveOperations = new MoveOperations(this);
     private final double maxVelocity = 0.1;
     private final double maxAngularVelocity = 0.001;
+    private final ArrayDeque<Point> targets = new ArrayDeque<>();
     private volatile double robotPositionX = 100;
     private volatile double robotPositionY = 100;
     private volatile double robotDirection = 0;
+    private volatile double destinationToTarget = 0;
     private volatile int currentTargetPositionX = 200;
     private volatile int currentTargetPositionY = 200;
-    private final ArrayDeque<Point> targets = new ArrayDeque<>();
 
-    public ArrayDeque<Point> getTargets(){
-        return targets;
+    public ArrayDeque<Point> getTargets() {
+        synchronized (targets) {
+            return targets;
+        }
     }
 
-    public void appendPoint(int x, int y){
-        targets.addLast(new Point(x,y));
+    public void removeFirstTarget() {
+        synchronized (targets) {
+            targets.removeFirst();
+        }
     }
 
-    public void appendPoint(Point point){
-        targets.addLast(point);
-        notifyObservers();
+    public void removeTarget(Point target) {
+        synchronized (targets) {
+            targets.remove(target);
+        }
+    }
+
+    public Point peekFirstTarget() {
+        synchronized (targets) {
+            return targets.peekFirst();
+        }
+    }
+
+    public void appendTarget(Point point) {
+        synchronized (targets) {
+            targets.addLast(point);
+        }
     }
 
     public double getRobotPositionX() {
@@ -72,22 +91,28 @@ public class RobotConstants extends Observable{
         currentTargetPositionY = p.y;
     }
 
-    public void updateGame(Component component) {
+    public double getDestinationToTarget() {
+        return destinationToTarget;
+    }
+
+    public void updateRobot(Component component) {
+        setChanged();
+        notifyObservers(this);
         if (getTargets().isEmpty())
             return;
         else {
-            setTargetPosition(getTargets().peekFirst());
+            setTargetPosition(peekFirstTarget());
         }
 
-        double distance = MathOperations.distance(
+        destinationToTarget = MathOperations.distance(
                 getCurrentTargetPositionX(),
                 getCurrentTargetPositionY(),
                 getRobotPositionX(),
                 getRobotPositionY()
         );
 
-        if (distance < 0.5)
-            getTargets().removeFirst();
+        if (destinationToTarget < 0.5)
+            removeFirstTarget();
 
         double velocity = getMaxVelocity();
         double angleToTarget = MathOperations.angleTo(
@@ -125,8 +150,6 @@ public class RobotConstants extends Observable{
             angularVelocity = -1 * getMaxAngularVelocity();
         }
         moveOperations.moveRobot(velocity, angularVelocity, 10);
-        setChanged();
-        notifyObservers(targets);
     }
 }
 

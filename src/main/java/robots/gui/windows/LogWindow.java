@@ -16,7 +16,6 @@ import java.util.ResourceBundle;
 public class LogWindow extends AbstractWindow implements LogChangeListener {
     private final LogWindowSource m_logSource;
     private final TextArea m_logContent;
-    private final DialogGenerator exitDialog = new DialogGenerator();
 
     public LogWindow(LogWindowSource logSource) {
         super(ResourceBundle.getBundle("locale").getString("text.protocolOfWork"), true, true, true, true);
@@ -32,7 +31,7 @@ public class LogWindow extends AbstractWindow implements LogChangeListener {
         addInternalFrameListener(new InternalFrameAdapter() {
             @Override
             public void internalFrameClosing(InternalFrameEvent e) {
-                exitDialog.windowExitDialog(e);
+                DialogGenerator.windowExitDialog(e);
             }
         });
     }

@@ -2,6 +2,7 @@ package robots.gui;
 
 import robots.gui.abstractmenu.*;
 import robots.gui.windows.CoordinateWindow;
+import robots.gui.windows.DestinationWindow;
 import robots.gui.windows.GameWindow;
 import robots.gui.windows.LogWindow;
 import robots.locale.ILocalable;
@@ -23,6 +24,7 @@ public class MainApplicationFrame extends JFrame {
     private final String file = System.getProperty("user.home") + File.separator + "robotState";
     private final JDesktopPane desktopPane = new JDesktopPane();
     private final RobotConstants robotConstants = new RobotConstants();
+    private final DestinationWindow destinationWindow = new DestinationWindow();
     private final CoordinateWindow coordinateListenerWindow = new CoordinateWindow(robotConstants);
     private final GameWindow gameWindow = new GameWindow(robotConstants);
     private final LogWindow logWindow = new LogWindow(Logger.getDefaultLogSource());
@@ -30,7 +32,6 @@ public class MainApplicationFrame extends JFrame {
     private final TestsMenu testsMenu = new TestsMenu();
     private final ExitMenu exitMenu = new ExitMenu();
     private final LocaleMenu localeMenu = new LocaleMenu();
-    private final DialogGenerator dialogGenerator = new DialogGenerator();
     private FileStorage storage = new FileStorage();
 
 
@@ -50,16 +51,19 @@ public class MainApplicationFrame extends JFrame {
             @Override
             public void windowOpened(WindowEvent e) {
                 super.windowOpened(e);
-                storage = dialogGenerator.windowsRecoverDialogResult(e) == JOptionPane.NO_OPTION
+                storage = DialogGenerator.windowsRecoverDialogResult(e) == JOptionPane.NO_OPTION
                         ? new FileStorage()
                         : new FileStorage(file);
                 logWindow.setParams(storage.getState(logWindow.getClass().getName()));
                 gameWindow.setParams(storage.getState(gameWindow.getClass().getName()));
                 coordinateListenerWindow.setParams(storage.getState(coordinateListenerWindow.getClass().getName()));
+                destinationWindow.setParams(storage.getState(destinationWindow.getClass().getName()));
                 addWindow(logWindow);
                 addWindow(gameWindow);
                 addWindow(coordinateListenerWindow);
+                addWindow(destinationWindow);
                 robotConstants.addObserver(coordinateListenerWindow);
+                robotConstants.addObserver(destinationWindow);
             }
         });
         setJMenuBar(generateMenuBar());
@@ -80,7 +84,7 @@ public class MainApplicationFrame extends JFrame {
     }
 
     private void quit(EventObject e) {
-        if (dialogGenerator.appExitDialogResult(e) == JOptionPane.YES_OPTION) {
+        if (DialogGenerator.appExitDialogResult(e) == JOptionPane.YES_OPTION) {
             saveParamsToFile();
             System.exit(0);
         }

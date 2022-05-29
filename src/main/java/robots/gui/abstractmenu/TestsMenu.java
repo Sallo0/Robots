@@ -16,9 +16,7 @@ public class TestsMenu extends AbstractMenu {
         testsMenu.getAccessibleContext().setAccessibleDescription(
                 ResourceBundle.getBundle("locale").getString("text.testCommands"));
 
-        addLogMessageItem.addActionListener((event) -> {
-            Logger.debug(ResourceBundle.getBundle("locale").getString("text.newString"));
-        });
+        addLogMessageItem.addActionListener((event) -> Logger.debug(ResourceBundle.getBundle("locale").getString("text.newString")));
 
         testsMenu.add(addLogMessageItem);
         return testsMenu;

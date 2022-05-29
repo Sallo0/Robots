@@ -10,7 +10,6 @@ import javax.swing.event.InternalFrameEvent;
 import java.util.ResourceBundle;
 
 public class GameWindow extends AbstractWindow {
-    private final DialogGenerator exitDialog = new DialogGenerator();
 
     public GameWindow(RobotConstants robotConstants) {
         super(ResourceBundle.getBundle("locale").getString("title.gameField"),
@@ -27,7 +26,7 @@ public class GameWindow extends AbstractWindow {
         addInternalFrameListener(new InternalFrameAdapter() {
                                      @Override
                                      public void internalFrameClosing(InternalFrameEvent e) {
-                                         exitDialog.windowExitDialog(e);
+                                         DialogGenerator.windowExitDialog(e);
                                      }
                                  }
         );

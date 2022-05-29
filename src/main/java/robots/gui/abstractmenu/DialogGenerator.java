@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 
 public class DialogGenerator {
 
-    private int dialogTemplate(String title, String text, EventObject eventObject) {
+    private static int dialogTemplate(String title, String text, EventObject eventObject) {
         return JOptionPane.showOptionDialog(
                 ((Component) eventObject.getSource()),
                 text,
@@ -26,7 +26,7 @@ public class DialogGenerator {
         );
     }
 
-    public int appExitDialogResult(EventObject eventObject) {
+    public static int appExitDialogResult(EventObject eventObject) {
         return dialogTemplate(
                 ResourceBundle.getBundle("locale").getString("title.confirmExit"),
                 ResourceBundle.getBundle("locale").getString("text.exitAsk"),
@@ -34,7 +34,7 @@ public class DialogGenerator {
         );
     }
 
-    public int windowsRecoverDialogResult(EventObject eventObject) {
+    public static int windowsRecoverDialogResult(EventObject eventObject) {
         return dialogTemplate(
                 ResourceBundle.getBundle("locale").getString("title.confirmWinRestore"),
                 ResourceBundle.getBundle("locale").getString("text.winRestoreAsk"),
@@ -42,7 +42,7 @@ public class DialogGenerator {
         );
     }
 
-    public void windowExitDialog(EventObject eventObject) {
+    public static void windowExitDialog(EventObject eventObject) {
         int dialogResult = dialogTemplate(
                 ResourceBundle.getBundle("locale").getString("text.confirm"),
                 ResourceBundle.getBundle("locale").getString("text.closeWindowAsk"),
@@ -56,6 +56,30 @@ public class DialogGenerator {
                 ((Component) eventObject.getSource()).setVisible(false);
             }
         }
+    }
+
+    public static Point pointParamsDialogResult() {
+        JFrame frame = new JFrame();
+        SpinnerModel spinnerModelX = new SpinnerNumberModel();
+        SpinnerModel spinnerModelY = new SpinnerNumberModel();
+        JSpinner spinnerX = new JSpinner(spinnerModelX);
+        JSpinner spinnerY = new JSpinner(spinnerModelY);
+
+        JComponent[] inputs = new JComponent[]{
+                spinnerX,
+                spinnerY
+        };
+        int result = JOptionPane.showConfirmDialog(
+                frame,
+                inputs,
+                ResourceBundle.getBundle("locale").getString("title.enterCordDialog"),
+                JOptionPane.DEFAULT_OPTION
+        );
+
+        if (result == JOptionPane.OK_OPTION) {
+            return new Point((Integer) spinnerX.getValue(), (Integer) spinnerY.getValue());
+        }
+        return null;
     }
 }
 

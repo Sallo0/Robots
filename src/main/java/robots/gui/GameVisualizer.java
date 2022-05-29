@@ -1,7 +1,6 @@
 package robots.gui;
 
 import robots.logic.MathOperations;
-import robots.logic.MoveOperations;
 import robots.logic.RobotConstants;
 
 import javax.swing.*;
@@ -13,14 +12,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class GameVisualizer extends JPanel {
-    private final java.util.Timer m_timer = initTimer();
     private final RobotConstants robotConstants;
-    private final MoveOperations moveOperations;
     private final MathOperations mathOperations = new MathOperations();
 
     public GameVisualizer(RobotConstants robotConstants) {
         this.robotConstants = robotConstants;
-        moveOperations = new MoveOperations(robotConstants);
+        Timer m_timer = initTimer();
         m_timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -30,13 +27,13 @@ public class GameVisualizer extends JPanel {
         m_timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                updateGame();
+                updateRobot();
             }
         }, 0, 10);
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                robotConstants.appendPoint(e.getPoint());
+                robotConstants.appendTarget(e.getPoint());
                 repaint();
             }
         });
@@ -44,8 +41,7 @@ public class GameVisualizer extends JPanel {
     }
 
     private static java.util.Timer initTimer() {
-        java.util.Timer timer = new Timer("events generator", true);
-        return timer;
+        return new Timer("events generator", true);
     }
 
     private static void fillOval(Graphics g, int centerX, int centerY, int diam1, int diam2) {
@@ -56,8 +52,8 @@ public class GameVisualizer extends JPanel {
         g.drawOval(centerX - diam1 / 2, centerY - diam2 / 2, diam1, diam2);
     }
 
-    private void updateGame(){
-        robotConstants.updateGame(this);
+    private void updateRobot() {
+        robotConstants.updateRobot(this);
     }
 
     protected void onRedrawEvent() {

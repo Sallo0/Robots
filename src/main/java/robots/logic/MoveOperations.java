@@ -51,8 +51,8 @@ public class MoveOperations {
         robotConstants.setRobotPositionX(newX);
         robotConstants.setRobotPositionY(newY);
         double newDirection = MathOperations.asNormalizedRadians(robotConstants.getRobotDirection()
-                        + angularVelocity
-                        * duration);
+                + angularVelocity
+                * duration);
         robotConstants.setRobotDirection(newDirection);
     }
 }
