@@ -15,6 +15,9 @@ public class RobotConstants extends Observable {
     private volatile double destinationToTarget = 0;
     private volatile int currentTargetPositionX = 200;
     private volatile int currentTargetPositionY = 200;
+    private final Point currentRobotPosition = new Point((int)robotPositionX,(int)robotPositionY);
+    private int maximumX;
+    private int maximumY;
 
     public ArrayDeque<Point> getTargets() {
         synchronized (targets) {
@@ -25,12 +28,16 @@ public class RobotConstants extends Observable {
     public void removeFirstTarget() {
         synchronized (targets) {
             targets.removeFirst();
+            setChanged();
+            notifyObservers(this);
         }
     }
 
     public void removeTarget(Point target) {
         synchronized (targets) {
             targets.remove(target);
+            setChanged();
+            notifyObservers(this);
         }
     }
 
@@ -43,7 +50,16 @@ public class RobotConstants extends Observable {
     public void appendTarget(Point point) {
         synchronized (targets) {
             targets.addLast(point);
+            setChanged();
+            notifyObservers(this);
         }
+    }
+
+    public void changeTarget(Point point, Point newPoint){
+        point.x = newPoint.x;
+        point.y = newPoint.y;
+        setChanged();
+        notifyObservers(this);
     }
 
     public double getRobotPositionX() {
@@ -52,6 +68,9 @@ public class RobotConstants extends Observable {
 
     public void setRobotPositionX(double robotPositionX) {
         this.robotPositionX = robotPositionX;
+        currentRobotPosition.x = MathOperations.round(robotPositionX);
+        setChanged();
+        notifyObservers(currentRobotPosition);
     }
 
     public double getRobotPositionY() {
@@ -60,6 +79,9 @@ public class RobotConstants extends Observable {
 
     public void setRobotPositionY(double robotPositionY) {
         this.robotPositionY = robotPositionY;
+        currentRobotPosition.y = MathOperations.round(robotPositionY);
+        setChanged();
+        notifyObservers(currentRobotPosition);
     }
 
     public double getRobotDirection() {
@@ -95,23 +117,37 @@ public class RobotConstants extends Observable {
         return destinationToTarget;
     }
 
-    public void updateRobot(Component component) {
+    public void setDestinationToTarget(double value) {
+        destinationToTarget = value;
         setChanged();
-        notifyObservers(this);
+        notifyObservers(destinationToTarget);
+    }
+
+    public int getMaximumX(){
+        return maximumX;
+    }
+
+    public int getMaximumY(){
+        return maximumY;
+    }
+
+    public void updateRobot(Component component) {
+        maximumX = component.getWidth();
+        maximumY = component.getHeight();
         if (getTargets().isEmpty())
             return;
         else {
             setTargetPosition(peekFirstTarget());
         }
 
-        destinationToTarget = MathOperations.distance(
+        setDestinationToTarget(MathOperations.distance(
                 getCurrentTargetPositionX(),
                 getCurrentTargetPositionY(),
                 getRobotPositionX(),
                 getRobotPositionY()
-        );
+        ));
 
-        if (destinationToTarget < 0.5)
+        if (getDestinationToTarget() < 0.5)
             removeFirstTarget();
 
         double velocity = getMaxVelocity();

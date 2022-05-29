@@ -16,6 +16,7 @@ public class CoordinateWindow extends AbstractWindow implements Observer {
     private final JPanel panel = new JPanel();
     private final CoordinateMenu coordinateMenu = new CoordinateMenu();
     private final RobotConstants robotConstants;
+    private final JLabel robotPosLabel = new JLabel();
 
     public CoordinateWindow(RobotConstants robotConstants) {
         super(ResourceBundle.getBundle("locale").getString("title.coordinateCheck"),
@@ -24,22 +25,28 @@ public class CoordinateWindow extends AbstractWindow implements Observer {
                 true,
                 true);
         this.robotConstants = robotConstants;
-        JScrollPane scrollablePanel = new JScrollPane(panel);
-        scrollablePanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollablePanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        GridLayout gridLayout = new GridLayout(2,1);
+        setLayout(gridLayout);
+        robotPosLabel.setBounds(0, 0, getWidth(), 50);
+        robotPosLabel.setText("x=" + (int) (robotConstants.getRobotPositionX()) +
+                "; y=" + (int) (robotConstants.getRobotPositionY()));
+        robotPosLabel.setFont(new Font("Arial", Font.ITALIC, 24));
+        robotPosLabel.setVisible(true);
         setJMenuBar(generateMenuBar());
-        add(scrollablePanel);
+        panel.setVisible(true);
+        add(robotPosLabel);
+        add(panel);
     }
 
     private JMenuBar generateMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(coordinateMenu.generateCoordinateMenu(e -> {
-            Point newPoint = DialogGenerator.pointParamsDialogResult();
+            Point newPoint = DialogGenerator.pointParamsDialogResult(robotConstants.getMaximumX()
+                    ,robotConstants.getMaximumY());
             if (newPoint != null) {
                 robotConstants.appendTarget(newPoint);
             }
         }));
-
         return menuBar;
     }
 
@@ -50,22 +57,22 @@ public class CoordinateWindow extends AbstractWindow implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        panel.removeAll();
-        CoordinatesLabel label;
-        JLabel robotPosLabel = new JLabel("x=" +
-                (int) (((RobotConstants) arg).getRobotPositionX()) +
-                "; y=" +
-                (int) (((RobotConstants) arg).getRobotPositionY()));
-        robotPosLabel.setFont(new Font("Arial", Font.ITALIC, 24));
-        int y = 0;
-        robotPosLabel.setBounds(0, y, getWidth(), 50);
-        y += robotPosLabel.getHeight();
-        panel.add(robotPosLabel);
-        for (Point point : ((RobotConstants) arg).getTargets()) {
-            label = new CoordinatesLabel(point, (RobotConstants) arg);
-            panel.add(label).setBounds(0, y, getWidth(), 50);
-            y += label.getHeight();
+        if (arg.getClass().equals(Point.class)){
+            robotPosLabel.setText("x=" + ((Point) arg).getX() +
+                    "; y=" + ((Point) arg).getY());
+            return;
         }
-        panel.repaint();
+        if(arg.getClass().equals(RobotConstants.class)) {
+            panel.removeAll();
+            panel.setLayout(new GridLayout(((RobotConstants) arg).getTargets().size(),1));
+            CoordinatesLabel label;
+            for (Point point : ((RobotConstants) arg).getTargets()) {
+                label = new CoordinatesLabel(point, (RobotConstants) arg);
+                label.setBounds(0,0,getWidth(),50);
+                panel.add(label);
+            }
+            panel.validate();
+            panel.repaint();
+        }
     }
 }

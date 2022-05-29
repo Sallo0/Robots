@@ -58,10 +58,10 @@ public class DialogGenerator {
         }
     }
 
-    public static Point pointParamsDialogResult() {
+    public static Point pointParamsDialogResult(int maxX, int maxY) {
         JFrame frame = new JFrame();
-        SpinnerModel spinnerModelX = new SpinnerNumberModel();
-        SpinnerModel spinnerModelY = new SpinnerNumberModel();
+        SpinnerModel spinnerModelX = new SpinnerNumberModel(0,0,maxX,1);
+        SpinnerModel spinnerModelY = new SpinnerNumberModel(0,0,maxY,1);
         JSpinner spinnerX = new JSpinner(spinnerModelX);
         JSpinner spinnerY = new JSpinner(spinnerModelY);
 

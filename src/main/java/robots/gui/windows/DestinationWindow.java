@@ -27,7 +27,8 @@ public class DestinationWindow extends AbstractWindow implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        label.setText(String.valueOf((int) ((RobotConstants) arg).getDestinationToTarget()));
+        if (arg.getClass().equals(Double.class))
+            label.setText(String.valueOf((int)((double) arg)));
     }
 
     @Override
